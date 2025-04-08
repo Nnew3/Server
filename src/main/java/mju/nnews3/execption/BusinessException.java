@@ -1,16 +1,16 @@
 package mju.nnews3.execption;
 
-import mju.nnews3.execption.fail.FailCode;
+import mju.nnews3.execption.error.ErrorCode;
 
 public class BusinessException extends RuntimeException{
-    private final FailCode failCode;
+    private final ErrorCode errorCode;
 
-    public BusinessException(FailCode failCode) {
-        super(failCode.getMsg());
-        this.failCode = failCode;
+    public BusinessException(ErrorCode errorCode) {
+        super(errorCode.getMsg());
+        this.errorCode = errorCode;
     }
 
-    public FailCode getFailCode() {
-        return failCode;
+    public ErrorCode getFailCode() {
+        return errorCode;
     }
 }

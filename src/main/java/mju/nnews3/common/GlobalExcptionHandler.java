@@ -2,7 +2,7 @@ package mju.nnews3.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import mju.nnews3.execption.BusinessException;
-import mju.nnews3.execption.fail.FailCode;
+import mju.nnews3.execption.error.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExcptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Response<Void>> handleBusinessException(BusinessException ex, HttpServletRequest request) {
-        FailCode code = ex.getFailCode();
+        ErrorCode code = ex.getFailCode();
         return ResponseEntity
                 .status(code.getHttpStatus())
                 .body(Response.fail(code.getHttpStatus(), code.getMsg()));
