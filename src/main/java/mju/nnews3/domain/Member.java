@@ -36,4 +36,10 @@ public class Member {
 
     @Column
     private boolean location;
+
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
 }
