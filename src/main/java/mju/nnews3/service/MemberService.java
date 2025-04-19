@@ -11,9 +11,11 @@ import java.time.LocalDate;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final WeatherService weatherService;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, WeatherService weatherService) {
         this.memberRepository = memberRepository;
+        this.weatherService = weatherService;
     }
 
     public MainInfoRes getMainInfo(Long userId) {
@@ -22,6 +24,12 @@ public class MemberService {
 
         String today = LocalDate.now().toString();
 
-        return new MainInfoRes(member.getNickname(), today, "맑음");
+        String weather = weatherService.getWeatherText(
+                member.getLatitude(),
+                member.getLongitude(),
+                member.isLocation()
+        );
+
+        return new MainInfoRes(member.getNickname(), today, weather);
     }
 }
