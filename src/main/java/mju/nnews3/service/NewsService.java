@@ -60,7 +60,7 @@ public class NewsService {
                         null
                 );
             default:
-                throw new IllegalArgumentException("Invalid period: " + period);
+                throw new NotFoundNewsException();
         }
     }
 
