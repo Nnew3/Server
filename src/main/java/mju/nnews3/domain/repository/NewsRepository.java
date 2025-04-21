@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
+    Optional<News> findById(Long id);
     Optional<News> findFirstByTitleContainingOrderByDateDesc(String word);
 
     List<News> findByTitleContainingOrderByDateDesc(String keyword);

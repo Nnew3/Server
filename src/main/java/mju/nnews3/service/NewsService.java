@@ -1,7 +1,8 @@
 package mju.nnews3.service;
 
 import mju.nnews3.api.dto.BreakingNewsRes;
-import mju.nnews3.api.dto.DateNewRes;
+import mju.nnews3.api.dto.DateNewsRes;
+import mju.nnews3.api.dto.DetailsNews;
 import mju.nnews3.common.DateUtil;
 import mju.nnews3.common.NewsMapper;
 import mju.nnews3.domain.News;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -39,7 +39,7 @@ public class NewsService {
         );
     }
 
-    public DateNewRes getBestNewsInRangeForPeriod(LocalDate baseDate, String period) {
+    public DateNewsRes getBestNewsInRangeForPeriod(LocalDate baseDate, String period) {
         switch (period.toLowerCase()) {
             case "day":
                 return getBestNewsInRange(
@@ -64,15 +64,15 @@ public class NewsService {
         }
     }
 
-    private DateNewRes getBestNewsInRange(LocalDateTime start, LocalDateTime end, Supplier<DateNewRes> fallback) {
+    private DateNewsRes getBestNewsInRange(LocalDateTime start, LocalDateTime end, Supplier<DateNewsRes> fallback) {
         return newsRepository.findTopByDateBetweenOrderByViewDescDateDesc(start, end)
-                .map(news -> new DateNewRes(
-                        news.getId(),
-                        news.getTitle(),
-                        news.getSummary(),
-                        DateUtil.formatDate(news.getDate()),
-                        news.getImgUrl()
-                ))
+                .map(news -> newsMapper.toDateNewsRes(news))
                 .orElseGet(() -> fallback != null ? fallback.get() : null);
+    }
+    public DetailsNews getDetailsNews(Long newsId) {
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(NotFoundNewsException::new);
+
+        return newsMapper.toDetailsDto(news);
     }
 }
