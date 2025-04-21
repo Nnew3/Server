@@ -46,4 +46,7 @@ public class News {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @Column(name = "view")
+    private Long view;
 }

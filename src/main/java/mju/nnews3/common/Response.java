@@ -1,7 +1,9 @@
 package mju.nnews3.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record Response<T>(
         boolean success,
         int status,
@@ -13,7 +15,7 @@ public record Response<T>(
     }
 
     public static <T> Response<T> success(T data) {
-        return success(data, "ok");
+        return success(data, "응답 성공");
     }
 
     public static <T> Response<T> fail(HttpStatus status, String msg) {
