@@ -1,6 +1,6 @@
 package mju.nnews3.api.dto;
 
-public record DateNewRes(
+public record DateNewsRes(
         Long id,
         String title,
         String content,

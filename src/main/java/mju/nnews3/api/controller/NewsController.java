@@ -1,11 +1,13 @@
 package mju.nnews3.api.controller;
 
 import mju.nnews3.api.dto.BreakingNewsRes;
-import mju.nnews3.api.dto.DateNewRes;
+import mju.nnews3.api.dto.DateNewsRes;
+import mju.nnews3.api.dto.DetailsNews;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.NewsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -27,9 +29,9 @@ public class NewsController {
     }
 
     @GetMapping("/user/v1/main/news")
-    public ResponseEntity<Response<Map<String, DateNewRes>>> getDateNews() {
+    public ResponseEntity<Response<Map<String, DateNewsRes>>> getDateNews() {
         LocalDate baseDate = LocalDate.now();
-        Map<String, DateNewRes> newsMap = new HashMap<>();
+        Map<String, DateNewsRes> newsMap = new HashMap<>();
 
         newsMap.put("day", newsService.getBestNewsInRangeForPeriod(baseDate, "day"));
         newsMap.put("week", newsService.getBestNewsInRangeForPeriod(baseDate, "week"));
@@ -38,4 +40,10 @@ public class NewsController {
         return ResponseEntity.ok(Response.success(newsMap));
     }
 
+    @GetMapping("/user/v1/newsDetails")
+    public ResponseEntity<Response<DetailsNews>> getDetailsNews(@RequestParam Long newsId) {
+        DetailsNews detailsNews = newsService.getDetailsNews(newsId);
+
+        return ResponseEntity.ok(Response.success(detailsNews));
+    }
 }
