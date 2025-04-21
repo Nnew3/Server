@@ -17,8 +17,12 @@ public class MemberController {
     }
 
     @GetMapping("/user/v1/main/info")
-    public ResponseEntity<Response<MainInfoRes>> getMainInfo(@RequestParam Long userId) {
-        MainInfoRes mainInfoRes = memberService.getMainInfo(userId);
+    public ResponseEntity<Response<MainInfoRes>> getMainInfo() {
+        int userId = 1;
+        Long longUserId = Long.valueOf(userId);
+
+        MainInfoRes mainInfoRes = memberService.getMainInfo(longUserId);
+
 
         return ResponseEntity.ok(Response.success(mainInfoRes));
     }

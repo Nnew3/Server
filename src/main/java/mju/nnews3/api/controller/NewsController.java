@@ -1,11 +1,16 @@
 package mju.nnews3.api.controller;
 
 import mju.nnews3.api.dto.BreakingNewsRes;
+import mju.nnews3.api.dto.DateNewRes;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.NewsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class NewsController {
@@ -20,4 +25,17 @@ public class NewsController {
         BreakingNewsRes breakingNewsRes = newsService.getBreakingNews();
         return ResponseEntity.ok(Response.success(breakingNewsRes));
     }
+
+    @GetMapping("/user/v1/main/news")
+    public ResponseEntity<Response<Map<String, DateNewRes>>> getDateNews() {
+        LocalDate baseDate = LocalDate.now();
+        Map<String, DateNewRes> newsMap = new HashMap<>();
+
+        newsMap.put("day", newsService.getBestNewsInRangeForPeriod(baseDate, "day"));
+        newsMap.put("week", newsService.getBestNewsInRangeForPeriod(baseDate, "week"));
+        newsMap.put("month", newsService.getBestNewsInRangeForPeriod(baseDate, "month"));
+
+        return ResponseEntity.ok(Response.success(newsMap));
+    }
+
 }

@@ -2,6 +2,8 @@ package mju.nnews3.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import mju.nnews3.execption.BusinessException;
+import mju.nnews3.execption.NotFoundNewsException;
+import mju.nnews3.execption.NotFoundUserException;
 import mju.nnews3.execption.error.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,20 @@ public class GlobalExcptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Response.fail(HttpStatus.BAD_REQUEST, errorMsg));
+    }
+
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<Response<Void>> handleNotFoundUserException(NotFoundUserException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Response.fail(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundNewsException.class)
+    public ResponseEntity<Response<Void>> handleNotFoundNewsException(NotFoundNewsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Response.fail(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
