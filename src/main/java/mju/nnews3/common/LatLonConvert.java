@@ -1,4 +1,4 @@
-package mju.nnews3.common.convert;
+package mju.nnews3.common;
 
 import java.util.HashMap;
 import java.util.Map;

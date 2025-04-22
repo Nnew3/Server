@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +32,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             Pageable pageable
     );
 
-    Optional<News> findTopByDateBetweenOrderByViewDescDateDesc(LocalDateTime start, LocalDateTime end);
+    Optional<News> findTopByDateBetweenOrderByViewDescDateDesc(Date start, Date end);
+
+    List<News> findByCategory(String category, Sort sort);
 }
