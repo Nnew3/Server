@@ -4,5 +4,4 @@ public record KeywordReq(
         Long id,
         String previousKeyword,
         String newKeyword
-) {
-}
+) {}

@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mju.nnews3.execption.DuplicateKeywordException;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,4 +44,21 @@ public class Member {
 
     @Column
     private Double longitude;
+
+    public void updateKeywordList(String previousKeyword, String newKeyword) {
+        List<String> updated = keyword == null ? new ArrayList<>() : new ArrayList<>(keyword);
+
+        if (previousKeyword != null) {
+            updated.remove(previousKeyword);
+        }
+
+        if (newKeyword != null) {
+            if (updated.contains(newKeyword)) {
+                throw new DuplicateKeywordException();
+            }
+            updated.add(newKeyword);
+        }
+
+        this.keyword = updated;
+    }
 }
