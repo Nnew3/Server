@@ -1,8 +1,6 @@
-package mju.nnews3.api.dto;
+package mju.nnews3.api.dto.res;
 
-import java.util.List;
-
-public record DetailsNews(
+public record DetailsNewsRes(
         Long id,
         String title,
         String summary,

@@ -1,4 +1,6 @@
-package mju.nnews3.api.dto;
+package mju.nnews3.api.dto.res;
+
+import mju.nnews3.api.dto.NewsDto;
 
 import java.util.List;
 

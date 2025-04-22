@@ -2,6 +2,10 @@ package mju.nnews3.domain.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mju.nnews3.api.dto.*;
+import mju.nnews3.api.dto.res.DateNewsRes;
+import mju.nnews3.api.dto.res.DetailsNewsRes;
+import mju.nnews3.api.dto.res.NewsListRes;
+import mju.nnews3.api.dto.res.NewsRes;
 import mju.nnews3.common.DateUtil;
 import mju.nnews3.common.FirstSentenceExtractor;
 import mju.nnews3.domain.News;
@@ -42,8 +46,8 @@ public class NewsMapper {
         );
     }
 
-    public DetailsNews toDetailsDto(News news) {
-       return new DetailsNews(
+    public DetailsNewsRes toDetailsDto(News news) {
+       return new DetailsNewsRes(
                 news.getId(),
                 news.getTitle(),
                 news.getSummary(),

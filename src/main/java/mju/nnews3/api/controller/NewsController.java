@@ -1,6 +1,9 @@
 package mju.nnews3.api.controller;
 
-import mju.nnews3.api.dto.*;
+import mju.nnews3.api.dto.res.BreakingNewsRes;
+import mju.nnews3.api.dto.res.DateNewsRes;
+import mju.nnews3.api.dto.res.DetailsNewsRes;
+import mju.nnews3.api.dto.res.NewsListRes;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.NewsService;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,10 +42,10 @@ public class NewsController {
     }
 
     @GetMapping("/user/v1/newsDetails")
-    public ResponseEntity<Response<DetailsNews>> getDetailsNews(@RequestParam Long newsId) {
-        DetailsNews detailsNews = newsService.getDetailsNews(newsId);
+    public ResponseEntity<Response<DetailsNewsRes>> getDetailsNews(@RequestParam Long newsId) {
+        DetailsNewsRes detailsNewsRes = newsService.getDetailsNews(newsId);
 
-        return ResponseEntity.ok(Response.success(detailsNews));
+        return ResponseEntity.ok(Response.success(detailsNewsRes));
     }
 
     @GetMapping("/user/v1")

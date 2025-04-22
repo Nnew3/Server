@@ -1,6 +1,9 @@
 package mju.nnews3.service;
 
-import mju.nnews3.api.dto.*;
+import mju.nnews3.api.dto.res.BreakingNewsRes;
+import mju.nnews3.api.dto.res.DateNewsRes;
+import mju.nnews3.api.dto.res.DetailsNewsRes;
+import mju.nnews3.api.dto.res.NewsListRes;
 import mju.nnews3.common.DateUtil;
 import mju.nnews3.common.FirstSentenceExtractor;
 import mju.nnews3.domain.mapper.CategoryType;
@@ -17,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
@@ -79,7 +81,7 @@ public class NewsService {
     }
 
 
-    public DetailsNews getDetailsNews(Long newsId) {
+    public DetailsNewsRes getDetailsNews(Long newsId) {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(NotFoundNewsException::new);
 

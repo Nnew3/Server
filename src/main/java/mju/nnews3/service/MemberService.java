@@ -1,6 +1,6 @@
 package mju.nnews3.service;
 
-import mju.nnews3.api.dto.MainInfoRes;
+import mju.nnews3.api.dto.res.MainInfoRes;
 import mju.nnews3.domain.Member;
 import mju.nnews3.execption.NotFoundUserException;
 import mju.nnews3.domain.repository.MemberRepository;
