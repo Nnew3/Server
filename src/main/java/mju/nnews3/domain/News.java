@@ -24,8 +24,7 @@ public class News {
     @Column(name = "title", length = 200, nullable = false)
     private String title;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "TEXT")
     private String summary;
 
     @Column(name = "publisher", length = 100)
