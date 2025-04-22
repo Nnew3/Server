@@ -54,6 +54,7 @@ jobs:
           sudo docker run -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
                            -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
                            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+                           -e WEATHER_API_KEY=${{ secrets.SPRING_WEATHER_API_KEY }} \
                            -d -p 8080:8080 --name github-actions-demo ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
         EOF
 
