@@ -44,18 +44,21 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Pull docker image
-      run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
-
-    - name: Stop running container (if any)
-      run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
-
-    - name: Run new docker container with environment variables
+    - name: SSH into EC2 and pull docker image
       run: |
-        sudo docker run -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-                         -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
-                         -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-                         -d -p 8080:8080 --name github-actions-demo ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+          sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+          sudo docker run -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+                           -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+                           -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+                           -d -p 8080:8080 --name github-actions-demo ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+        EOF
 
     - name: Clean up old docker images
-      run: sudo docker system prune -f
+      run: |
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          sudo docker system prune -f
+        EOF
