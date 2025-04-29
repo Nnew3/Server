@@ -6,7 +6,7 @@ import mju.nnews3.api.dto.res.DateNewsRes;
 import mju.nnews3.api.dto.res.DetailsNewsRes;
 import mju.nnews3.api.dto.res.NewsListRes;
 import mju.nnews3.api.dto.res.NewsRes;
-import mju.nnews3.common.DateUtil;
+import mju.nnews3.common.util.DateUtil;
 import mju.nnews3.common.FirstSentenceExtractor;
 import mju.nnews3.domain.News;
 import org.springframework.stereotype.Component;

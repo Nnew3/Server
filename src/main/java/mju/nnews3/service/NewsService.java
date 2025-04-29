@@ -1,12 +1,8 @@
 package mju.nnews3.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import mju.nnews3.api.dto.res.BreakingNewsRes;
-import mju.nnews3.api.dto.res.DateNewsRes;
-import mju.nnews3.api.dto.res.DetailsNewsRes;
-import mju.nnews3.api.dto.res.NewsListRes;
-import mju.nnews3.common.DateUtil;
+import mju.nnews3.api.dto.res.*;
+import mju.nnews3.common.util.DateUtil;
+import mju.nnews3.common.util.JaccardSimilarity;
 import mju.nnews3.domain.Member;
 import mju.nnews3.domain.mapper.CategoryType;
 import mju.nnews3.domain.mapper.NewsMapper;
@@ -24,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class NewsService {
@@ -138,4 +133,27 @@ public class NewsService {
         return keywordNews;
     }
 
+    public RelatedNewsListRes getNewsRelatedNews(Long newsId) {
+        News targetNews = newsRepository.findById(newsId)
+                .orElseThrow(NotFoundNewsException::new);
+
+        String targetCategory = targetNews.getCategory();
+
+        List<News> allNews = newsRepository.findAll();
+
+        List<RelatedNewsRes> related = allNews.stream()
+                .filter(n -> !n.getId().equals(newsId))
+                .filter(n -> n.getCategory().equals(targetCategory))
+                .map(n -> new Object() {
+                    final News news = n;
+                    final double similarity = JaccardSimilarity.compute(targetNews.getTitle(), n.getTitle());
+                })
+                .filter(wrapper -> wrapper.similarity > 0)
+                .sorted((a, b) -> Double.compare(b.similarity, a.similarity))
+                .limit(3)
+                .map(wrapper -> new RelatedNewsRes(wrapper.news.getId(), wrapper.news.getTitle()))
+                .toList();
+
+        return new RelatedNewsListRes(related);
+    }
 }

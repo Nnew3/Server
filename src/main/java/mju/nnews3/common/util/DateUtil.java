@@ -1,4 +1,4 @@
-package mju.nnews3.common;
+package mju.nnews3.common.util;
 
 import java.text.SimpleDateFormat;
 import java.time.*;
