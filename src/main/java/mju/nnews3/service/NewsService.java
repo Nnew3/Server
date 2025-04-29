@@ -92,6 +92,14 @@ public class NewsService {
 
         return newsMapper.toDetailsDto(news);
     }
+    public NewsListRes getNewsByCategoryAndSort(String categoryParam, String sortParam) {
+        CategoryType categoryType = CategoryType.fromParam(categoryParam);
+        Sort sort = SortType.fromParam(sortParam).getSort();
+
+        List<News> newsList = newsRepository.findByCategory(categoryType.getDisplay(), sort);
+
+        return newsMapper.toNewsListRes(newsList);
+    }
 
     public NewsListRes getNewsByMemberKeywords(Long memberId, String sortParam) {
         Sort sort = SortType.fromParam(sortParam).getSort();
@@ -117,6 +125,17 @@ public class NewsService {
         }
 
         return newsMapper.toNewsListRes(allNews);
+    }
+
+    public NewsListRes getNewsByKeywordOrRecent(Long memberId) {
+        NewsListRes keywordNews = getNewsByMemberKeywords(memberId, "recent");
+
+        if (keywordNews.newsResList().isEmpty()) {
+            List<News> recentNews = newsRepository.findTop10ByOrderByDateDesc();
+            return newsMapper.toNewsListRes(recentNews);
+        }
+
+        return keywordNews;
     }
 
 }

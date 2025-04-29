@@ -52,14 +52,21 @@ public class NewsController {
             @RequestParam String sort
     ) {
         Long memberId = 1L; // 추후 토큰 기반으로 대체
+        NewsListRes newsListRes;
 
         if ("keyword".equalsIgnoreCase(category)) {
-            NewsListRes newsListRes = newsService.getNewsByMemberKeywords(memberId, sort);
-            return ResponseEntity.ok(Response.success(newsListRes));
+            newsListRes = newsService.getNewsByMemberKeywords(memberId, sort);
+        } else {
+            newsListRes = newsService.getNewsByCategoryAndSort(category, sort);
         }
 
-        NewsListRes newsListRes = newsService.getNewsByMemberKeywords(1L, sort);
         return ResponseEntity.ok(Response.success(newsListRes));
     }
 
+    @GetMapping("/user/v1/main/userNews")
+    public ResponseEntity<Response<NewsListRes>> getNewsByKeywordOrRecent() {
+        Long memberId = 1L; // 추후 토큰 기반으로 교체
+        NewsListRes newsListRes = newsService.getNewsByKeywordOrRecent(memberId);
+        return ResponseEntity.ok(Response.success(newsListRes));
+    }
 }
