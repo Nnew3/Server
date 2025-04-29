@@ -2,8 +2,14 @@ package mju.nnews3.service;
 
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
+import mju.nnews3.api.dto.res.MemberNewsListRes;
+import mju.nnews3.api.dto.res.MemberNewsRes;
 import mju.nnews3.api.dto.res.MypageRes;
 import mju.nnews3.domain.Member;
+import mju.nnews3.domain.News;
+import mju.nnews3.domain.repository.MemberLikeRepository;
+import mju.nnews3.domain.repository.NewsRepository;
+import mju.nnews3.domain.repository.ViewRepository;
 import mju.nnews3.execption.KeywordValidationException;
 import mju.nnews3.execption.NotFoundUserException;
 import mju.nnews3.domain.repository.MemberRepository;
@@ -19,10 +25,16 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final WeatherService weatherService;
+    private final NewsRepository newsRepository;
+    private final ViewRepository viewRepository;
+    private final MemberLikeRepository memberLikeRepository;
 
-    public MemberService(MemberRepository memberRepository, WeatherService weatherService) {
+    public MemberService(MemberRepository memberRepository, WeatherService weatherService, NewsRepository newsRepository, ViewRepository viewRepository, MemberLikeRepository memberLikeRepository) {
         this.memberRepository = memberRepository;
         this.weatherService = weatherService;
+        this.newsRepository = newsRepository;
+        this.viewRepository = viewRepository;
+        this.memberLikeRepository = memberLikeRepository;
     }
 
     public MainInfoRes getMainInfo(Long userId) {
@@ -67,5 +79,23 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundUserException());
 
         return new MypageRes(member.getId(), member.getNickname(), member.getEmail(), member.getKeyword(), member.isAlarm(), member.isLocation());
+    }
+
+    public MemberNewsListRes getRecentNewsByUserId(Long userId) {
+        List<News> recentNews = viewRepository.findViewedNewsByUserId(userId);
+        return mapToMemberNewsListRes(recentNews);
+    }
+
+    public MemberNewsListRes getLikedNewsByUserId(Long userId) {
+        List<News> likedNews = memberLikeRepository.findViewedNewsByUserId(userId);
+        return mapToMemberNewsListRes(likedNews);
+    }
+
+    private MemberNewsListRes mapToMemberNewsListRes(List<News> newsList) {
+        List<MemberNewsRes> resList = newsList.stream()
+                .map(MemberNewsRes::from)
+                .toList();
+
+        return new MemberNewsListRes(resList);
     }
 }
