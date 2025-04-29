@@ -69,4 +69,11 @@ public class NewsController {
         NewsListRes newsListRes = newsService.getNewsByKeywordOrRecent(memberId);
         return ResponseEntity.ok(Response.success(newsListRes));
     }
+
+    @GetMapping("/user/v1/relatedNews")
+    public ResponseEntity<Response<RelatedNewsListRes>> getNewsRelatedNews(@RequestParam Long newsId) {
+        RelatedNewsListRes relatedNewsListRes = newsService.getNewsRelatedNews(newsId);
+
+        return ResponseEntity.ok(Response.success(relatedNewsListRes));
+    }
 }
