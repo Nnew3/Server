@@ -1,34 +1,39 @@
 package mju.nnews3.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import mju.nnews3.api.dto.res.BreakingNewsRes;
 import mju.nnews3.api.dto.res.DateNewsRes;
 import mju.nnews3.api.dto.res.DetailsNewsRes;
 import mju.nnews3.api.dto.res.NewsListRes;
 import mju.nnews3.common.DateUtil;
-import mju.nnews3.common.FirstSentenceExtractor;
+import mju.nnews3.domain.Member;
 import mju.nnews3.domain.mapper.CategoryType;
 import mju.nnews3.domain.mapper.NewsMapper;
 import mju.nnews3.domain.News;
 import mju.nnews3.domain.mapper.SortType;
+import mju.nnews3.domain.repository.MemberRepository;
 import mju.nnews3.domain.repository.NewsRepository;
 import mju.nnews3.execption.NotFoundNewsException;
+import mju.nnews3.execption.NotFoundUserException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class NewsService {
     private final NewsRepository newsRepository;
     private final NewsMapper newsMapper;
-    private final FirstSentenceExtractor firstSentenceExtractor;
+    private final MemberRepository memberRepository;
 
-    public NewsService(NewsRepository newsRepository, NewsMapper newsMapper, FirstSentenceExtractor firstSentenceExtractor) {
-        this.firstSentenceExtractor = firstSentenceExtractor;
+    public NewsService(NewsRepository newsRepository, NewsMapper newsMapper, MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
         this.newsRepository = newsRepository;
         this.newsMapper = newsMapper;
     }
@@ -88,12 +93,30 @@ public class NewsService {
         return newsMapper.toDetailsDto(news);
     }
 
-    public NewsListRes getNewsByCategoryAndSort(String categoryParam, String sortParam) {
-        CategoryType categoryType = CategoryType.fromParam(categoryParam);
+    public NewsListRes getNewsByMemberKeywords(Long memberId, String sortParam) {
         Sort sort = SortType.fromParam(sortParam).getSort();
 
-        List<News> newsList = newsRepository.findByCategory(categoryType.getDisplay(), sort);
-        
-        return newsMapper.toNewsListRes(newsList);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundUserException());
+
+        List<String> keywords = new ArrayList<>();
+
+        if (member.getKeyword() != null && !member.getKeyword().isEmpty()) {
+            keywords = Arrays.asList(member.getKeyword().split(","));
+            keywords = keywords.stream().map(String::trim).collect(Collectors.toList());
+        }
+
+        if (keywords.isEmpty()) {
+            return new NewsListRes(List.of());
+        }
+
+        List<News> allNews = new ArrayList<>();
+        for (String keyword : keywords) {
+            List<News> keywordNews = newsRepository.findByTitleContaining(keyword, sort);
+            allNews.addAll(keywordNews);
+        }
+
+        return newsMapper.toNewsListRes(allNews);
     }
+
 }

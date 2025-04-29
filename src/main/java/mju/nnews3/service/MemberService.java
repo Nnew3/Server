@@ -49,7 +49,12 @@ public class MemberService {
         Member member = memberRepository.findById(keywordReq.id())
                 .orElseThrow(NotFoundUserException::new);
 
-        member.updateKeywordList(keywordReq.previousKeyword(), keywordReq.newKeyword());
+        String previousKeyword = keywordReq.previousKeyword();
+        String newKeyword = keywordReq.newKeyword();
+
+        if (previousKeyword != null && newKeyword != null) {
+            member.updateKeywordList(previousKeyword, newKeyword);
+        }
 
         memberRepository.save(member);
     }
