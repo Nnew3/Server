@@ -1,9 +1,6 @@
 package mju.nnews3.api.controller;
 
-import mju.nnews3.api.dto.res.BreakingNewsRes;
-import mju.nnews3.api.dto.res.DateNewsRes;
-import mju.nnews3.api.dto.res.DetailsNewsRes;
-import mju.nnews3.api.dto.res.NewsListRes;
+import mju.nnews3.api.dto.res.*;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.NewsService;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,8 +51,15 @@ public class NewsController {
             @RequestParam String category,
             @RequestParam String sort
     ) {
-        NewsListRes newsListRes = newsService.getNewsByCategoryAndSort(category, sort);
+        Long memberId = 1L; // 추후 토큰 기반으로 대체
 
+        if ("keyword".equalsIgnoreCase(category)) {
+            NewsListRes newsListRes = newsService.getNewsByMemberKeywords(memberId, sort);
+            return ResponseEntity.ok(Response.success(newsListRes));
+        }
+
+        NewsListRes newsListRes = newsService.getNewsByMemberKeywords(1L, sort);
         return ResponseEntity.ok(Response.success(newsListRes));
     }
+
 }

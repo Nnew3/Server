@@ -35,4 +35,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     Optional<News> findTopByDateBetweenOrderByViewDescDateDesc(Date start, Date end);
 
     List<News> findByCategory(String category, Sort sort);
+
+    List<News> findByTitleContaining(String keyword, Sort sort);
 }

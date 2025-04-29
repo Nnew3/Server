@@ -11,6 +11,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "member")
@@ -29,9 +30,8 @@ public class Member {
     @Column
     private String email;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
-    private List<String> keyword;
+    @Column(columnDefinition = "TEXT")  // JSON 대신 텍스트로 변경
+    private String keyword;
 
     @Column
     private boolean alarm;
@@ -46,7 +46,8 @@ public class Member {
     private Double longitude;
 
     public void updateKeywordList(String previousKeyword, String newKeyword) {
-        List<String> updated = keyword == null ? new ArrayList<>() : new ArrayList<>(keyword);
+        List<String> updated = (keyword != null && !keyword.isEmpty()) ?
+                new ArrayList<>(List.of(keyword.split(","))) : new ArrayList<>();
 
         if (previousKeyword != null) {
             updated.remove(previousKeyword);
@@ -59,6 +60,7 @@ public class Member {
             updated.add(newKeyword);
         }
 
-        this.keyword = updated;
+        // List를 다시 String으로 변환하여 저장
+        this.keyword = updated.stream().collect(Collectors.joining(","));
     }
 }
