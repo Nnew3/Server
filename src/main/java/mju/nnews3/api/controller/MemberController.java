@@ -2,6 +2,7 @@ package mju.nnews3.api.controller;
 
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
+import mju.nnews3.api.dto.res.MypageRes;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,15 @@ public class MemberController {
         memberService.updateKeyword(keywordReq);
 
         return ResponseEntity.ok(Response.success(null));
+    }
+
+    @GetMapping("/user/v1/mypage/info")
+    public ResponseEntity<Response<MypageRes>> getMaypage() {
+        int userId = 1;
+        Long longUserId = Long.valueOf(userId);
+
+        MypageRes mypageRes = memberService.getMaypage(longUserId);
+
+        return ResponseEntity.ok(Response.success(mypageRes));
     }
 }
