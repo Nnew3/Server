@@ -9,6 +9,7 @@ import mju.nnews3.execption.NotFoundUserException;
 import mju.nnews3.domain.repository.MemberRepository;
 import mju.nnews3.execption.error.ErrorCode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +40,7 @@ public class MemberService {
         return new MainInfoRes(member.getNickname(), today, weather);
     }
 
+    @Transactional
     public void updateKeyword(KeywordReq keywordReq) {
         if (keywordReq.newKeyword() != null) {
             String newKeyword = keywordReq.newKeyword();

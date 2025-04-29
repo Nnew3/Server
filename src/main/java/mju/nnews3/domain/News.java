@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "news")
@@ -45,4 +47,15 @@ public class News {
 
     @Column(name = "view")
     private Long view;
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<View> views = new ArrayList<>();
+
+    public void updateView() {
+        if (this.view == null) {
+            this.view = 0L;
+        } else {
+            this.view += 1;
+        }
+    }
 }
