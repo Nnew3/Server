@@ -2,6 +2,7 @@ package mju.nnews3.service;
 
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
+import mju.nnews3.api.dto.res.MypageRes;
 import mju.nnews3.domain.Member;
 import mju.nnews3.execption.KeywordValidationException;
 import mju.nnews3.execption.NotFoundUserException;
@@ -57,5 +58,12 @@ public class MemberService {
         }
 
         memberRepository.save(member);
+    }
+
+    public MypageRes getMaypage(Long userId) {
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException());
+
+        return new MypageRes(member.getId(), member.getNickname(), member.getEmail(), member.getKeyword(), member.isAlarm(), member.isLocation());
     }
 }
