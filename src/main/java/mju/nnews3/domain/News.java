@@ -39,9 +39,6 @@ public class News {
     @Column(name = "category", length = 45)
     private String category;
 
-    @Column(name = "like")
-    private Long likeCount;
-
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
