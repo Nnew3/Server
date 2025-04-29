@@ -60,7 +60,12 @@ public class Member {
             updated.add(newKeyword);
         }
 
-        // List를 다시 String으로 변환하여 저장
         this.keyword = updated.stream().collect(Collectors.joining(","));
     }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<View> views = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberLike> likes = new ArrayList<>();
 }
