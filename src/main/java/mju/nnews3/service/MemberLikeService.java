@@ -41,4 +41,19 @@ public class MemberLikeService {
         }
     }
 
+    @Transactional
+    public void deleteLike(LikeReq likeReq) {
+        Member member = memberRepository.findById(likeReq.userId())
+                .orElseThrow(() -> new NotFoundUserException());
+        News news = newsRepository.findById(likeReq.newsId())
+                .orElseThrow(() -> new NotFoundNewsException());
+
+        MemberLike existingLike = memberLikeRepository.findByMemberAndNews(member, news);
+
+        if (existingLike == null) {
+            throw new NotFoundNewsException();
+        }
+
+        memberLikeRepository.delete(existingLike);
+    }
 }

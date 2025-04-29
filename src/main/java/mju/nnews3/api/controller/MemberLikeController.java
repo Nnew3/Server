@@ -4,6 +4,7 @@ import mju.nnews3.api.dto.req.LikeReq;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.MemberLikeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,4 +26,12 @@ public class MemberLikeController {
         return ResponseEntity.ok(Response.success(null));
     }
 
+    @DeleteMapping("/user/v1/news/like")
+    public ResponseEntity<Response<Void>> deleteLike(
+            @RequestBody LikeReq likeReq
+    ) {
+        memberLikeService.deleteLike(likeReq);
+
+        return ResponseEntity.ok(Response.success(null));
+    }
 }
