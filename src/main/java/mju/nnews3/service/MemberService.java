@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,5 +118,26 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundUserException());
 
         return new QuizInfoRes(member.getId(), member.getNickname(), member.getSafeScore());
+    }
+
+    public QuizRankinListRes getQuizRanking() {
+        List<Member> members = memberRepository.findAll();
+
+        List<Member> sortedMembers = members.stream()
+                .sorted((m1, m2) -> Integer.compare(m2.getSafeScore(), m1.getSafeScore()))
+                .collect(Collectors.toList());
+
+        List<QuizRankingRes> rankingList = new ArrayList<>();
+        for (int i = 0; i < sortedMembers.size(); i++) {
+            Member member = sortedMembers.get(i);
+            rankingList.add(new QuizRankingRes(
+                    member.getId(),
+                    (long) (i + 1),
+                    member.getNickname(),
+                    member.getSafeScore()
+            ));
+        }
+
+        return new QuizRankinListRes(rankingList);
     }
 }
