@@ -141,19 +141,38 @@ public class NewsService {
 
         List<News> allNews = newsRepository.findAll();
 
-        List<RelatedNewsRes> related = allNews.stream()
+        List<RelatedWrapper> related = allNews.stream()
                 .filter(n -> !n.getId().equals(newsId))
                 .filter(n -> n.getCategory().equals(targetCategory))
-                .map(n -> new Object() {
-                    final News news = n;
-                    final double similarity = JaccardSimilarity.compute(targetNews.getTitle(), n.getTitle());
+                .map(n -> {
+                    JaccardSimilarity.Result result = JaccardSimilarity.compute(targetNews.getTitle(), n.getTitle());
+                    return new RelatedWrapper(n, result.similarity(), result.commonWords());
                 })
-                .filter(wrapper -> wrapper.similarity > 0)
                 .sorted((a, b) -> Double.compare(b.similarity, a.similarity))
                 .limit(3)
+                .toList();
+
+        List<RelatedNewsRes> relatedRes = related.stream()
                 .map(wrapper -> new RelatedNewsRes(wrapper.news.getId(), wrapper.news.getTitle()))
                 .toList();
 
-        return new RelatedNewsListRes(related);
+        String keyword = related.isEmpty() || related.get(0).commonWords.isEmpty()
+                ? ""
+                : related.get(0).commonWords.iterator().next();
+
+        return new RelatedNewsListRes(keyword, relatedRes);
     }
+
+    private static class RelatedWrapper {
+        final News news;
+        final double similarity;
+        final Set<String> commonWords;
+
+        RelatedWrapper(News news, double similarity, Set<String> commonWords) {
+            this.news = news;
+            this.similarity = similarity;
+            this.commonWords = commonWords;
+        }
+    }
+
 }
