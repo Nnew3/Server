@@ -1,6 +1,8 @@
 package mju.nnews3.service;
 
+import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
+import mju.nnews3.api.dto.req.LocationReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
 import mju.nnews3.api.dto.res.MemberNewsListRes;
 import mju.nnews3.api.dto.res.MemberNewsRes;
@@ -70,8 +72,6 @@ public class MemberService {
         if (previousKeyword != null && newKeyword != null) {
             member.updateKeywordList(previousKeyword, newKeyword);
         }
-
-        memberRepository.save(member);
     }
 
     public MypageRes getMaypage(Long userId) {
@@ -97,5 +97,21 @@ public class MemberService {
                 .toList();
 
         return new MemberNewsListRes(resList);
+    }
+
+    @Transactional
+    public void patchLocation(LocationReq locationReq) {
+        Member member = memberRepository.findById(locationReq.userId())
+                .orElseThrow(() -> new NotFoundUserException());
+
+        member.changeLocationConsent(locationReq.isLocation());
+    }
+
+    @Transactional
+    public void patchAlarm(AlarmReq alarmReq) {
+        Member member = memberRepository.findById(alarmReq.userId())
+                .orElseThrow(() -> new NotFoundUserException());
+
+        member.changeAlarmConsent(alarmReq.isAlarm());
     }
 }

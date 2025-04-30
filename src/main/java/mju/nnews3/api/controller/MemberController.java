@@ -1,6 +1,8 @@
 package mju.nnews3.api.controller;
 
+import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
+import mju.nnews3.api.dto.req.LocationReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
 import mju.nnews3.api.dto.res.MemberNewsListRes;
 import mju.nnews3.api.dto.res.MypageRes;
@@ -65,5 +67,19 @@ public class MemberController {
         }
 
         return ResponseEntity.ok(Response.success(memberNewsListRes));
+    }
+
+    @PatchMapping("/user/v1/location")
+    public ResponseEntity<Response<Void>> patchLocation(@RequestBody LocationReq locationReq) {
+        memberService.patchLocation(locationReq);
+
+        return ResponseEntity.ok(Response.success(null));
+    }
+
+    @PatchMapping("/user/v1/alarm")
+    public ResponseEntity<Response<Void>> patchAlarm(@RequestBody AlarmReq alarmReq) {
+        memberService.patchAlarm(alarmReq);
+
+        return ResponseEntity.ok(Response.success(null));
     }
 }

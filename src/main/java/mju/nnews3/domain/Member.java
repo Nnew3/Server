@@ -63,9 +63,11 @@ public class Member {
         this.keyword = updated.stream().collect(Collectors.joining(","));
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<View> views = new ArrayList<>();
+    public void changeLocationConsent(boolean location) {
+        this.location = location;
+    }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberLike> likes = new ArrayList<>();
+    public void changeAlarmConsent(boolean alarm) {
+        this.alarm = alarm;
+    }
 }
