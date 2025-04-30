@@ -3,9 +3,7 @@ package mju.nnews3.api.controller;
 import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.req.LocationReq;
-import mju.nnews3.api.dto.res.MainInfoRes;
-import mju.nnews3.api.dto.res.MemberNewsListRes;
-import mju.nnews3.api.dto.res.MypageRes;
+import mju.nnews3.api.dto.res.*;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -81,5 +79,22 @@ public class MemberController {
         memberService.patchAlarm(alarmReq);
 
         return ResponseEntity.ok(Response.success(null));
+    }
+
+    @GetMapping("/user/v1/quiz/info")
+    public ResponseEntity<Response<QuizInfoRes>> getQuizInfo() {
+        int userId = 1;
+        Long longUserId = Long.valueOf(userId);
+
+        QuizInfoRes quizInfoRes = memberService.getQuizInfo(longUserId);
+
+        return ResponseEntity.ok(Response.success(quizInfoRes));
+    }
+
+    @GetMapping("/user/v1/quiz/ranking")
+    public ResponseEntity<Response<QuizRankinListRes>> getQuizRanking() {
+        QuizRankinListRes quizRankinListRes = memberService.getQuizRanking();
+
+        return ResponseEntity.ok(Response.success(quizRankinListRes));
     }
 }

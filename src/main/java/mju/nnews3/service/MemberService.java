@@ -3,10 +3,7 @@ package mju.nnews3.service;
 import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.req.LocationReq;
-import mju.nnews3.api.dto.res.MainInfoRes;
-import mju.nnews3.api.dto.res.MemberNewsListRes;
-import mju.nnews3.api.dto.res.MemberNewsRes;
-import mju.nnews3.api.dto.res.MypageRes;
+import mju.nnews3.api.dto.res.*;
 import mju.nnews3.domain.Member;
 import mju.nnews3.domain.News;
 import mju.nnews3.domain.repository.MemberLikeRepository;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,5 +111,33 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundUserException());
 
         member.changeAlarmConsent(alarmReq.isAlarm());
+    }
+
+    public QuizInfoRes getQuizInfo(Long userId) {
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException());
+
+        return new QuizInfoRes(member.getId(), member.getNickname(), member.getSafeScore());
+    }
+
+    public QuizRankinListRes getQuizRanking() {
+        List<Member> members = memberRepository.findAll();
+
+        List<Member> sortedMembers = members.stream()
+                .sorted((m1, m2) -> Integer.compare(m2.getSafeScore(), m1.getSafeScore()))
+                .collect(Collectors.toList());
+
+        List<QuizRankingRes> rankingList = new ArrayList<>();
+        for (int i = 0; i < sortedMembers.size(); i++) {
+            Member member = sortedMembers.get(i);
+            rankingList.add(new QuizRankingRes(
+                    member.getId(),
+                    (long) (i + 1),
+                    member.getNickname(),
+                    member.getSafeScore()
+            ));
+        }
+
+        return new QuizRankinListRes(rankingList);
     }
 }
