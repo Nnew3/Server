@@ -6,6 +6,7 @@ import mju.nnews3.api.dto.req.LocationReq;
 import mju.nnews3.api.dto.res.MainInfoRes;
 import mju.nnews3.api.dto.res.MemberNewsListRes;
 import mju.nnews3.api.dto.res.MypageRes;
+import mju.nnews3.api.dto.res.QuizInfoRes;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -81,5 +82,15 @@ public class MemberController {
         memberService.patchAlarm(alarmReq);
 
         return ResponseEntity.ok(Response.success(null));
+    }
+
+    @GetMapping("/user/v1/quiz/info")
+    public ResponseEntity<Response<QuizInfoRes>> getQuizInfo() {
+        int userId = 1;
+        Long longUserId = Long.valueOf(userId);
+
+        QuizInfoRes quizInfoRes = memberService.getQuizInfo(longUserId);
+
+        return ResponseEntity.ok(Response.success(quizInfoRes));
     }
 }

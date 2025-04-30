@@ -3,10 +3,7 @@ package mju.nnews3.service;
 import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.req.LocationReq;
-import mju.nnews3.api.dto.res.MainInfoRes;
-import mju.nnews3.api.dto.res.MemberNewsListRes;
-import mju.nnews3.api.dto.res.MemberNewsRes;
-import mju.nnews3.api.dto.res.MypageRes;
+import mju.nnews3.api.dto.res.*;
 import mju.nnews3.domain.Member;
 import mju.nnews3.domain.News;
 import mju.nnews3.domain.repository.MemberLikeRepository;
@@ -113,5 +110,12 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundUserException());
 
         member.changeAlarmConsent(alarmReq.isAlarm());
+    }
+
+    public QuizInfoRes getQuizInfo(Long userId) {
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException());
+
+        return new QuizInfoRes(member.getId(), member.getNickname(), member.getSafeScore());
     }
 }

@@ -45,6 +45,9 @@ public class Member {
     @Column
     private Double longitude;
 
+    @Column
+    private Integer score;
+
     public void updateKeywordList(String previousKeyword, String newKeyword) {
         List<String> updated = (keyword != null && !keyword.isEmpty()) ?
                 new ArrayList<>(List.of(keyword.split(","))) : new ArrayList<>();
@@ -69,5 +72,9 @@ public class Member {
 
     public void changeAlarmConsent(boolean alarm) {
         this.alarm = alarm;
+    }
+
+    public int getSafeScore() {
+        return score != null ? score : 0;
     }
 }
