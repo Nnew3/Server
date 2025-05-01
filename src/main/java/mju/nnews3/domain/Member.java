@@ -77,4 +77,8 @@ public class Member {
     public int getSafeScore() {
         return score != null ? score : 0;
     }
+
+    public void updateScore(Integer score) {
+        this.score += score;
+    }
 }

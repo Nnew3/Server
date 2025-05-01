@@ -3,6 +3,7 @@ package mju.nnews3.service;
 import mju.nnews3.api.dto.req.AlarmReq;
 import mju.nnews3.api.dto.req.KeywordReq;
 import mju.nnews3.api.dto.req.LocationReq;
+import mju.nnews3.api.dto.req.QuizScoreReq;
 import mju.nnews3.api.dto.res.*;
 import mju.nnews3.domain.Member;
 import mju.nnews3.domain.News;
@@ -139,5 +140,13 @@ public class MemberService {
         }
 
         return new QuizRankinListRes(rankingList);
+    }
+
+    @Transactional
+    public void updateScore(QuizScoreReq quizScoreReq) {
+        Member member = memberRepository.findById(quizScoreReq.userId())
+                .orElseThrow(() -> new NotFoundUserException());
+
+        member.updateScore(quizScoreReq.score());
     }
 }
