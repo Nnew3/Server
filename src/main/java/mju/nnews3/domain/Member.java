@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import mju.nnews3.execption.DuplicateKeywordException;
+import mju.nnews3.execption.NotFoundKeywordException;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -80,5 +81,24 @@ public class Member {
 
     public void updateScore(Integer score) {
         this.score += score;
+    }
+
+    public void deleteKeyword(String toDelete) {
+        if (toDelete == null || toDelete.isBlank()) {
+            throw new NotFoundKeywordException();
+        }
+
+        if (this.keyword == null || this.keyword.isBlank()) {
+            throw new NotFoundKeywordException();
+        }
+
+        List<String> keywordList = new ArrayList<>(List.of(this.keyword.split(",")));
+
+        if (!keywordList.contains(toDelete)) {
+            throw new NotFoundKeywordException();
+        }
+
+        keywordList.removeIf(k -> k.equals(toDelete));
+        this.keyword = String.join(",", keywordList);
     }
 }

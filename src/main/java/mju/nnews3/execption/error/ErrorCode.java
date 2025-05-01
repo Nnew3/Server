@@ -12,6 +12,7 @@ public enum ErrorCode {
     NOT_FOUND_NEWS(HttpStatus.NOT_FOUND, "존재하지 않는 뉴스입니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
     NOT_FOUND_QUIZ(HttpStatus.NOT_FOUND, "존재하지 않는 퀴즈입니다."),
+    NOT_FOUND_KEYWORD(HttpStatus.NOT_FOUND,"존재하지 않는 키워드입니다."),
 
     INVALID_KEYWORD(HttpStatus.BAD_REQUEST,"잘못된 키워드입니다."),
     DUPLICATE_KEYWORD(HttpStatus.BAD_REQUEST, "이미 존재하는 키워드입니다."),

@@ -1,9 +1,6 @@
 package mju.nnews3.api.controller;
 
-import mju.nnews3.api.dto.req.AlarmReq;
-import mju.nnews3.api.dto.req.KeywordReq;
-import mju.nnews3.api.dto.req.LocationReq;
-import mju.nnews3.api.dto.req.QuizScoreReq;
+import mju.nnews3.api.dto.req.*;
 import mju.nnews3.api.dto.res.*;
 import mju.nnews3.common.Response;
 import mju.nnews3.service.MemberService;
@@ -102,6 +99,13 @@ public class MemberController {
     @PostMapping("/user/v1/quiz/score")
     public ResponseEntity<Response<Void>> updateScore(@RequestBody QuizScoreReq quizScoreReq) {
         memberService.updateScore(quizScoreReq);
+
+        return ResponseEntity.ok(Response.success(null));
+    }
+
+    @DeleteMapping("/user/v1/keyword")
+    public ResponseEntity<Response<Void>> deleteKeyword(@RequestBody KeywordDeleteReq keywordDeleteReq) {
+        memberService.deleteKeyword(keywordDeleteReq);
 
         return ResponseEntity.ok(Response.success(null));
     }

@@ -1,9 +1,6 @@
 package mju.nnews3.service;
 
-import mju.nnews3.api.dto.req.AlarmReq;
-import mju.nnews3.api.dto.req.KeywordReq;
-import mju.nnews3.api.dto.req.LocationReq;
-import mju.nnews3.api.dto.req.QuizScoreReq;
+import mju.nnews3.api.dto.req.*;
 import mju.nnews3.api.dto.res.*;
 import mju.nnews3.domain.Member;
 import mju.nnews3.domain.News;
@@ -148,5 +145,13 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundUserException());
 
         member.updateScore(quizScoreReq.score());
+    }
+
+    @Transactional
+    public void deleteKeyword(KeywordDeleteReq keywordDeleteReq) {
+        Member member = memberRepository.findById(keywordDeleteReq.userId())
+                .orElseThrow(NotFoundUserException::new);
+
+        member.deleteKeyword(keywordDeleteReq.keyword());
     }
 }
