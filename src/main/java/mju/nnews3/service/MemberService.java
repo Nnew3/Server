@@ -83,7 +83,7 @@ public class MemberService {
     }
 
     public MemberNewsListRes getLikedNewsByUserId(Long userId) {
-        List<News> likedNews = memberLikeRepository.findViewedNewsByUserId(userId);
+        List<News> likedNews = memberLikeRepository.findLikedNewsByUserId(userId);
         return mapToMemberNewsListRes(likedNews);
     }
 

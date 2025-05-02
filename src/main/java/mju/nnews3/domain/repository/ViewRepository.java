@@ -17,7 +17,8 @@ public interface ViewRepository extends JpaRepository<View, Long> {
     @Query("""
     SELECT v.news FROM View v
     WHERE v.member.id = :userId
-    """)
+    ORDER BY v.id DESC
+""")
     List<News> findViewedNewsByUserId(@Param("userId") Long userId);
 
 }

@@ -16,9 +16,10 @@ public interface MemberLikeRepository extends JpaRepository<MemberLike, Long> {
     MemberLike findByMemberAndNews(Member member, News news);
 
     @Query("""
-    SELECT v.news FROM View v
-    WHERE v.member.id = :userId
-    ORDER BY v.id DESC
+    SELECT ml.news FROM MemberLike ml
+    WHERE ml.member.id = :userId
+    ORDER BY ml.id DESC
 """)
-    List<News> findViewedNewsByUserId(@Param("userId") Long userId);
+    List<News> findLikedNewsByUserId(@Param("userId") Long userId);
+
 }
