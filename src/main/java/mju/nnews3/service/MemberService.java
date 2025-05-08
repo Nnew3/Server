@@ -10,7 +10,6 @@ import mju.nnews3.domain.repository.ViewRepository;
 import mju.nnews3.execption.KeywordValidationException;
 import mju.nnews3.execption.NotFoundUserException;
 import mju.nnews3.domain.repository.MemberRepository;
-import mju.nnews3.execption.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,11 +95,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void patchLocation(LocationReq locationReq) {
-        Member member = memberRepository.findById(locationReq.userId())
+    public void patchLocation(IsLocationReq isLocationReq) {
+        Member member = memberRepository.findById(isLocationReq.userId())
                 .orElseThrow(() -> new NotFoundUserException());
 
-        member.changeLocationConsent(locationReq.isLocation());
+        member.changeLocationConsent(isLocationReq.isLocation());
     }
 
     @Transactional
@@ -153,5 +152,13 @@ public class MemberService {
                 .orElseThrow(NotFoundUserException::new);
 
         member.deleteKeyword(keywordDeleteReq.keyword());
+    }
+
+    @Transactional
+    public void updateLocation(LocationReq locationReq) {
+        Member member = memberRepository.findById(locationReq.userId())
+                .orElseThrow(NotFoundUserException::new);
+
+        member.updateLocation(locationReq.lat(), locationReq.lon());
     }
 }

@@ -101,4 +101,9 @@ public class Member {
         keywordList.removeIf(k -> k.equals(toDelete));
         this.keyword = String.join(",", keywordList);
     }
+
+    public void updateLocation(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
