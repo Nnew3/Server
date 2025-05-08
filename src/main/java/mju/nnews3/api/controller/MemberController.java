@@ -66,8 +66,8 @@ public class MemberController {
     }
 
     @PatchMapping("/user/v1/location")
-    public ResponseEntity<Response<Void>> patchLocation(@RequestBody LocationReq locationReq) {
-        memberService.patchLocation(locationReq);
+    public ResponseEntity<Response<Void>> patchLocation(@RequestBody IsLocationReq isLocationReq) {
+        memberService.patchLocation(isLocationReq);
 
         return ResponseEntity.ok(Response.success(null));
     }
@@ -106,6 +106,13 @@ public class MemberController {
     @DeleteMapping("/user/v1/keyword")
     public ResponseEntity<Response<Void>> deleteKeyword(@RequestBody KeywordDeleteReq keywordDeleteReq) {
         memberService.deleteKeyword(keywordDeleteReq);
+
+        return ResponseEntity.ok(Response.success(null));
+    }
+
+    @PostMapping("user/v1/location")
+    public ResponseEntity<Response<Void>> updateLocation(@RequestBody LocationReq locationReq) {
+        memberService.updateLocation(locationReq);
 
         return ResponseEntity.ok(Response.success(null));
     }
