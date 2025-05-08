@@ -74,7 +74,7 @@ public class MemberService {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundUserException());
 
-        return new MypageRes(member.getId(), member.getNickname(), member.getEmail(), member.getKeyword(), member.isAlarm(), member.isLocation());
+        return new MypageRes(member.getId(), member.getNickname(), member.getEmail(), member.getKeyword(), member.getScore(), member.isAlarm(), member.isLocation());
     }
 
     public MemberNewsListRes getRecentNewsByUserId(Long userId) {

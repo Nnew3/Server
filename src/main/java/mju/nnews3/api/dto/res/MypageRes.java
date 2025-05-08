@@ -5,6 +5,7 @@ public record MypageRes(
         String nickName,
         String email,
         String keyword,
+        int score,
         boolean alarm,
         boolean location
 ) {
