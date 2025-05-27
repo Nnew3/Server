@@ -37,4 +37,4 @@ out/
 .vscode/
 
 application.yml
-nnews3-43003-firebase-adminsdk-fbsvc-a3f55a2c00.json
+firebase-service-account.json
