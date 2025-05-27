@@ -39,4 +39,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findByTitleContaining(String keyword, Sort sort);
 
     List<News> findTop10ByOrderByDateDesc();
+
+    List<News> findByTitle(String tittle);
 }
