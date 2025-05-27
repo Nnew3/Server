@@ -16,7 +16,8 @@ public enum ErrorCode {
 
     INVALID_KEYWORD(HttpStatus.BAD_REQUEST,"잘못된 키워드입니다."),
     DUPLICATE_KEYWORD(HttpStatus.BAD_REQUEST, "이미 존재하는 키워드입니다."),
-    KEYWORD_TOO_LONG_WHITESPACE(HttpStatus.BAD_REQUEST,"키워드는 공백을 포함할 수 없으며, 10자 이상일 수 없습니다."),;
+    KEYWORD_TOO_LONG_WHITESPACE(HttpStatus.BAD_REQUEST,"키워드는 공백을 포함할 수 없으며, 10자 이상일 수 없습니다."),
+    INVALID_FCM_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않거나 저장할 수 없는 FCM 토큰입니다.");;
 
     private final HttpStatus httpStatus;
     private final String msg;

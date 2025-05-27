@@ -49,6 +49,9 @@ public class Member {
     @Column
     private Integer score;
 
+    @Column
+    private String token;
+
     public void updateKeywordList(String previousKeyword, String newKeyword) {
         List<String> updated = (keyword != null && !keyword.isEmpty()) ?
                 new ArrayList<>(List.of(keyword.split(","))) : new ArrayList<>();
@@ -105,5 +108,9 @@ public class Member {
     public void updateLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public void updateToken(String token) {
+        this.token = token;
     }
 }
