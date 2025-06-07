@@ -1,12 +1,12 @@
 package mju.nnews3.domain.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mju.nnews3.api.dto.*;
-import mju.nnews3.api.dto.res.DateNewsRes;
-import mju.nnews3.api.dto.res.DetailsNewsRes;
-import mju.nnews3.api.dto.res.NewsListRes;
-import mju.nnews3.api.dto.res.NewsRes;
-import mju.nnews3.common.util.DateUtil;
+import mju.nnews3.domain.api.dto.NewsDto;
+import mju.nnews3.domain.api.dto.res.DateNewsRes;
+import mju.nnews3.domain.api.dto.res.DetailsNewsRes;
+import mju.nnews3.domain.api.dto.res.NewsListRes;
+import mju.nnews3.domain.api.dto.res.NewsRes;
+import mju.nnews3.util.DateUtil;
 import mju.nnews3.common.FirstSentenceExtractor;
 import mju.nnews3.domain.News;
 import org.springframework.stereotype.Component;
