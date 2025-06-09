@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import mju.nnews3.execption.DuplicateKeywordException;
-import mju.nnews3.execption.NotFoundKeywordException;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import mju.nnews3.execption.BusinessException;
+import mju.nnews3.execption.error.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +60,7 @@ public class Member {
 
         if (newKeyword != null) {
             if (updated.contains(newKeyword)) {
-                throw new DuplicateKeywordException();
+                throw new BusinessException(ErrorCode.DUPLICATE_KEYWORD);
             }
             updated.add(newKeyword);
         }
@@ -88,17 +86,17 @@ public class Member {
 
     public void deleteKeyword(String toDelete) {
         if (toDelete == null || toDelete.isBlank()) {
-            throw new NotFoundKeywordException();
+            throw new BusinessException(ErrorCode.DUPLICATE_KEYWORD);
         }
 
         if (this.keyword == null || this.keyword.isBlank()) {
-            throw new NotFoundKeywordException();
+            throw new BusinessException(ErrorCode.DUPLICATE_KEYWORD);
         }
 
         List<String> keywordList = new ArrayList<>(List.of(this.keyword.split(",")));
 
         if (!keywordList.contains(toDelete)) {
-            throw new NotFoundKeywordException();
+            throw new BusinessException(ErrorCode.DUPLICATE_KEYWORD);
         }
 
         keywordList.removeIf(k -> k.equals(toDelete));

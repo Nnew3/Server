@@ -1,6 +1,5 @@
 package mju.nnews3.domain.member.core.service;
 
-import mju.nnews3.domain.member.core.service.FCMService;
 import mju.nnews3.domain.news.core.News;
 import mju.nnews3.domain.news.core.repository.NewsRepository;
 import org.springframework.scheduling.annotation.Scheduled;
